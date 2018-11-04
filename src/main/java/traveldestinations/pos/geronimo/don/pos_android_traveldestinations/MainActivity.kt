@@ -28,18 +28,18 @@ class MainActivity : AppCompatActivity() {
         //Usa o adapter
         adapter = DestinationAdapter(this,destinationList)
         destinations.adapter = adapter
-        destinations.onItemClickListener = AdapterView.OnItemClickListener { adapterView, view, position, id ->
-            val selectedDestination = destinationList[position]
-            var gmmInternalUri = Uri.parse("google.streetview:cbll=${selectedDestination.latitudeLongitude}")
-            var gmmIntent = Intent(Intent.ACTION_VIEW, gmmInternalUri)
-            gmmIntent.setPackage("com.google.android.apps.maps")
-            if(gmmIntent.resolveActivity(packageManager)!=null){
-                startActivity(gmmIntent)
-            }
-            else{
-                Toast.makeText(this, "Sem google maps, nao tem como abrir", Toast.LENGTH_SHORT).show()
-            }
-        }
+//        destinations.onItemClickListener = AdapterView.OnItemClickListener { adapterView, view, position, id ->
+//            val selectedDestination = destinationList[position]
+//            var gmmInternalUri = Uri.parse("google.streetview:cbll=${selectedDestination.latitudeLongitude}")
+//            var gmmIntent = Intent(Intent.ACTION_VIEW, gmmInternalUri)
+//            gmmIntent.setPackage("com.google.android.apps.maps")
+//            if(gmmIntent.resolveActivity(packageManager)!=null){
+//                startActivity(gmmIntent)
+//            }
+//            else{
+//                Toast.makeText(this, "Sem google maps, nao tem como abrir", Toast.LENGTH_SHORT).show()
+//            }
+//        }
         newLocation.setOnClickListener { view ->
             val intent = Intent(this, NewLocationActivity::class.java)
             startActivityForResult(intent, ID_NEW_LOCATION)
@@ -54,14 +54,13 @@ class MainActivity : AppCompatActivity() {
                 val newName = data?.getStringExtra("name")
                 val newCoord = data?.getStringExtra("coordinates")
                 val newDestination = Destination(newName!!, newCoord!!)
-                destinationList.add(newDestination)
-                adapter.notifyDataSetChanged()
+                adapter.addDestination(newDestination)
             }
         }
     }
 
     private fun populateList(){
         destinationList.add(Destination("Mercadão de Madureira", "-22.8707293,-43.3381514"))
-        destinationList.add(Destination("Copacabana", "-22.9697777,43.1868592"))
+        destinationList.add(Destination("Copacabana", "-22.9697777,-43.1868592"))
     }
 }
